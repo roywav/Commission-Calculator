@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Commission Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solar Commission Calculator</h1>
+
+    <label for="systemSize">System Size (kW):</label>
+    <input type="number" id="systemSize" placeholder="Enter system size in kW" required>
+
+    <label for="ppw">Price per Watt (PPW):</label>
+    <input type="number" id="ppw" placeholder="Enter price per watt" required>
+
+    <label for="addersBattery">Adders & Battery Cost:</label>
+    <input type="number" id="addersBattery" placeholder="Enter adders & battery cost" required>
+
+    <label for="redline">Redline:</label>
+    <input type="number" id="redline" placeholder="Enter redline value" required>
+
+    <button onclick="calculateCommission()">Calculate Commission</button>
+
+    <div class="result" id="result">Commission: $0.00</div>
+
+    <script>
+        function calculateCommission() {
+            const systemSize = parseFloat(document.getElementById("systemSize").value);
+            const ppw = parseFloat(document.getElementById("ppw").value);
+            const addersBattery = parseFloat(document.getElementById("addersBattery").value);
+            const redline = parseFloat(document.getElementById("redline").value);
+
+            if (isNaN(systemSize) || isNaN(ppw) || isNaN(addersBattery) || isNaN(redline)) {
+                alert("Please enter valid numbers in all fields.");
+                return;
+            }
+
+            // Calculate Net PPW
+            const netPPW = systemSize * ppw;
+
+            // Calculate System Cost
+            const systemCost = netPPW * 1000 - addersBattery;
+
+            // Calculate Sum
+            const sum = (systemCost / systemSize / 1000) - redline;
+
+            // Calculate Commission
+            const commission = sum * 1000 * systemSize;
+
+            // Display Result
+            document.getElementById("result").textContent = `Commission: $${commission.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
